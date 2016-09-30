@@ -10,6 +10,7 @@ class Cetbuildtools2 < Formula
     mkdir "build" do
       system "cmake", "../", *args
       system "make", "install"
+    end
   end
 
   test do
