@@ -1,11 +1,12 @@
 class Cetlib < Formula
   desc "FNAL cetlib C++ library"
   homepage "https://github.com/drbenmorgan/fnal-cetlib"
-  url "https://github.com/drbenmorgan/fnal-cetlib.git", :branch => "feature/alt-cmake-macos", :revision => "69219b6"
-  version "1.20.0"
+  url "https://github.com/drbenmorgan/fnal-cetlib.git", :branch => "feature/alt-cmake"
+  version "3.0.0"
 
   depends_on "cmake" => :build
   depends_on "cetbuildtools2"
+  depends_on "cetlib_except"
   #depends_on "boost" => "c++11"
   depends_on "sqlite"
   depends_on "doxygen" => :optional
