@@ -1,14 +1,16 @@
 class FhiclCpp < Formula
   desc "FNAL fhicl-cpp C++ library"
   homepage "https://github.com/drbenmorgan/fnal-fhicl-cpp"
-  url "https://github.com/drbenmorgan/fnal-fhicl-cpp.git", :branch => "feature/alt-cmake-macos", :revision => "f1597c4"
-  version "4.1.0"
+  url "https://github.com/drbenmorgan/fnal-fhicl-cpp.git", :branch => "feature/alt-cmake"
+  version "4.5.0"
 
   depends_on "cmake" => :build
   depends_on "cetbuildtools2"
   depends_on "cetlib"
+  depends_on "cetlib_except"
   #depends_on "boost" => "c++11"
   depends_on "sqlite"
+  depends_on :python
   depends_on "doxygen" => :optional
 
   def install
