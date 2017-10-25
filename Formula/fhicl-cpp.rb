@@ -3,6 +3,7 @@ class FhiclCpp < Formula
   homepage "https://github.com/drbenmorgan/fnal-fhicl-cpp.git"
   url "https://github.com/drbenmorgan/fnal-fhicl-cpp.git", :branch => "feature/alt-cmake"
   version "4.6.1"
+  revision 1
   head "https://github.com/drbenmorgan/fnal-fhicl-cpp.git", :branch => "feature/alt-cmake"
 
   depends_on "drbenmorgan/art_suite/cetbuildtools2"
@@ -24,9 +25,19 @@ class FhiclCpp < Formula
       system "ctest"
       system "make", "install"
     end
+
+    if OS.mac?
+      MachO::Tools.change_install_name("#{bin}/fhicl-dump",
+                                      "@rpath/libfhiclcpp.dylib",
+                                      "#{lib}/libfhiclcpp.dylib")
+      MachO::Tools.change_install_name("#{bin}/fhicl-write-db",
+                                      "@rpath/libfhiclcpp.dylib",
+                                      "#{lib}/libfhiclcpp.dylib")
+    end
   end
 
   test do
+    # Check Linkage
     (testpath/"test.cpp").write <<~EOS
       #include <fhiclcpp/ParameterSet.h>
       #include <fhiclcpp/make_ParameterSet.h>
@@ -42,5 +53,14 @@ class FhiclCpp < Formula
     EOS
     system ENV.cxx, "-std=c++1y", "test.cpp", "-L#{lib}", "-lfhiclcpp", "-o", "test"
     system "./test"
+    # Test programs
+    (testpath/"test.fcl").write <<~EOS
+      myatom: 42
+      foo : {
+        bar : "baz"
+      }
+    EOS
+    system "#{bin}/fhicl-dump", "-l0", "test.fcl"
+    system "#{bin}/fhicl-write-db", "test.fcl", "test.sqlite"
   end
 end
