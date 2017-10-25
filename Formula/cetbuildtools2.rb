@@ -18,7 +18,7 @@ class Cetbuildtools2 < Formula
   end
 
   test do
-    (testpath/"CMakeLists.txt").write("find_package(cetbuildtools2)")
+    (testpath/"CMakeLists.txt").write("find_package(cetbuildtools2 REQUIRED)")
     system "cmake", "."
   end
 end
