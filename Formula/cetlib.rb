@@ -3,6 +3,7 @@ class Cetlib < Formula
   homepage "https://cdcvs.fnal.gov/redmine/projects/cetlib"
   url "https://github.com/drbenmorgan/fnal-cetlib.git", :branch => "feature/alt-cmake"
   version "3.1.0"
+  revision 1
   head "https://github.com/drbenmorgan/fnal-cetlib.git", :branch => "feature/alt-cmake"
 
   depends_on "drbenmorgan/art_suite/cetbuildtools2"
@@ -25,9 +26,16 @@ class Cetlib < Formula
       system "ctest", "-E", "PluginFactory_t|LibraryManager_t|regex_t$|regex_standalone_t"
       system "make", "install"
     end
+
+    if OS.mac?
+      MachO::Tools.change_install_name("#{bin}/inc-expand",
+                                      "@rpath/libcetlib.dylib",
+                                      "#{lib}/libcetlib.dylib")
+    end
   end
 
   test do
+    # Check linkage
     (testpath/"test.cpp").write <<~EOS
       #include <cetlib/search_path.h>
       #include <iostream>
@@ -39,5 +47,7 @@ class Cetlib < Formula
     EOS
     system ENV.cxx, "-std=c++1y", "test.cpp", "-L#{lib}", "-lcetlib", "-o", "test"
     system "./test"
+    # Check program
+    system "#{bin}/inc-expand"
   end
 end
