@@ -3,7 +3,7 @@ class FhiclCpp < Formula
   homepage "https://github.com/drbenmorgan/fnal-fhicl-cpp.git"
   url "https://github.com/drbenmorgan/fnal-fhicl-cpp.git", :branch => "feature/alt-cmake"
   version "4.6.1"
-  revision 1
+  revision 2
   head "https://github.com/drbenmorgan/fnal-fhicl-cpp.git", :branch => "feature/alt-cmake"
 
   depends_on "drbenmorgan/art_suite/cetbuildtools2"
@@ -33,6 +33,9 @@ class FhiclCpp < Formula
       MachO::Tools.change_install_name("#{bin}/fhicl-write-db",
                                       "@rpath/libfhiclcpp.dylib",
                                       "#{lib}/libfhiclcpp.dylib")
+      MachO::Tools.change_install_name("#{lib}/fhicl.so",
+                                       "@rpath/libfhiclcpp.dylib",
+                                       "#{lib}/libfhiclcpp.dylib")
     end
   end
 
