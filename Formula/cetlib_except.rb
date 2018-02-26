@@ -3,6 +3,9 @@ class CetlibExcept < Formula
   homepage "https://github.com/drbenmorgan/fnal-cetlib_except"
   url "https://github.com/drbenmorgan/fnal-cetlib_except.git", :tag => "v1.1.3-altcmake"
   head "https://github.com/drbenmorgan/fnal-cetlib_except.git", :branch => "feature/alt-cmake"
+  devel do
+    url "https://github.com/drbenmorgan/fnal-cetlib_except.git", :tag => "v1.1.6-altcmake"
+  end
 
   depends_on "drbenmorgan/art_suite/cetbuildtools2" => :build
   depends_on "cmake" => :build
