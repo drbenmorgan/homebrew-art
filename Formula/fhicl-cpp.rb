@@ -2,9 +2,11 @@ class FhiclCpp < Formula
   desc "FNAL Hierarchical Configuration Language C++ Library"
   homepage "https://github.com/drbenmorgan/fnal-fhicl-cpp.git"
   url "https://github.com/drbenmorgan/fnal-fhicl-cpp.git", :branch => "feature/alt-cmake"
-  version "4.6.1"
-  revision 2
+  version "4.6.5"
   head "https://github.com/drbenmorgan/fnal-fhicl-cpp.git", :branch => "feature/alt-cmake"
+  devel do
+    url "https://github.com/drbenmorgan/fnal-fhicl-cpp.git", :tag => "v4.6.5-altcmake"
+  end
 
   depends_on "drbenmorgan/art_suite/cetbuildtools2"
   depends_on "drbenmorgan/art_suite/cetlib_except"
