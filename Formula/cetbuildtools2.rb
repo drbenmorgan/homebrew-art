@@ -1,8 +1,11 @@
 class Cetbuildtools2 < Formula
   desc "Custom CMake functionality for building Art Software Suite"
   homepage "https://github.com/drbenmorgan/cetbuildtools2"
-  url "https://github.com/drbenmorgan/cetbuildtools2.git", :tag => "v0.2.0"
+  url "https://github.com/drbenmorgan/cetbuildtools2.git", :tag => "v0.3.0"
   head "https://github.com/drbenmorgan/cetbuildtools2.git", :branch => "develop"
+  devel do
+    url "https://github.com/drbenmorgan/cetbuildtools2.git", :tag => "v0.4.0"
+  end
 
   depends_on "cmake" => [:build, :run]
   depends_on "sphinx-doc" => [:recommended, :build]
