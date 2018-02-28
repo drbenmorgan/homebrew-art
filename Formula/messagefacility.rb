@@ -22,10 +22,16 @@ class Messagefacility < Formula
       args = std_cmake_args
       args << "-DALT_CMAKE=ON"
       system "cmake", "..", *args
-      # TODO: MF isn't SIP compatible yet, so most tests fail
-      # system "make"
-      # system "ctest"
+      system "make"
+      system "ctest"
       system "make", "install"
+    end
+
+    # Update linkage (TBDE in CMake, or via args above)
+    if OS.mac?
+      MachO::Tools.change_install_name("#{lib}/libMF_MessageLogger.dylib",
+                                      "@rpath/libMF_Utilities.dylib",
+                                      "#{lib}/libMF_Utilities.dylib")
     end
   end
 
