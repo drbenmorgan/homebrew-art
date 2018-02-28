@@ -4,7 +4,7 @@ class Cetbuildtools2 < Formula
   url "https://github.com/drbenmorgan/cetbuildtools2.git", :tag => "v0.3.0"
   head "https://github.com/drbenmorgan/cetbuildtools2.git", :branch => "develop"
   devel do
-    url "https://github.com/drbenmorgan/cetbuildtools2.git", :tag => "v0.4.0"
+    url "https://github.com/drbenmorgan/cetbuildtools2.git", :tag => "v0.4.1"
   end
 
   depends_on "cmake" => [:build, :run]
