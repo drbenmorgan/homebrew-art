@@ -5,10 +5,13 @@ class Cetlib < Formula
   version "3.1.0"
   revision 1
   head "https://github.com/drbenmorgan/fnal-cetlib.git", :branch => "feature/alt-cmake"
+  devel do
+    url "https://github.com/drbenmorgan/fnal-cetlib.git", :tag => "v3.2.0-altcmake_1"
+  end
 
   depends_on "drbenmorgan/art_suite/cetbuildtools2"
   depends_on "drbenmorgan/art_suite/cetlib_except"
-  # This leads to an audit error, so should package own boost!
+  # This leads to an audit error, so should package own boost (e.g. art-boost with auto c++14!)
   depends_on "boost" => "c++11"
   depends_on "sqlite"
   depends_on "cmake" => :build
@@ -18,12 +21,9 @@ class Cetlib < Formula
     mkdir "build" do
       args = std_cmake_args
       args << "-DALT_CMAKE=ON"
-      # TODO: Current version still has warnings for C-linkage/Boost
-      args << "-DCET_COMPILER_WARNINGS_ARE_ERRORS=OFF"
       system "cmake", "..", *args
       system "make"
-      # Exclude tests that fail due to SIP for now
-      system "ctest", "-E", "PluginFactory_t|LibraryManager_t|regex_t$|regex_standalone_t"
+      system "ctest"
       system "make", "install"
     end
 
