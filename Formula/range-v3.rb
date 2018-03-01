@@ -9,10 +9,8 @@
   needs :cxx14
 
   def install
-    system "cmake", ".", *std_cmake_args
-    system "make"
-    system "make", "test"
-    system "make", "install"
+    system "cmake", ".", *std_cmake_args, "-DBUILD_TESTING=OFF"
+    system "make", "install/fast"
   end
 
   test do
