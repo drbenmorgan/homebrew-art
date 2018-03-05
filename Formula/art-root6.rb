@@ -1,5 +1,5 @@
-class Root6 < Formula
-  desc "CERN C++ Data Analysis and Persistency Libraries"
+class ArtRoot6 < Formula
+  desc "CERN C++ Data Analysis and Persistency Libraries (Art Suite)"
   homepage "http://root.cern.ch"
   url "http://root.cern.ch/download/root_v6.12.04.source.tar.gz"
   mirror "https://fossies.org/linux/misc/root_v6.12.04.source.tar.gz"
@@ -8,24 +8,24 @@ class Root6 < Formula
 
   head "http://root.cern.ch/git/root.git"
 
-  conflicts_with "root", :because => "we need c++14"
-
   depends_on "cmake" => :build
   depends_on "openssl" => :recommended
   depends_on "sqlite" => :recommended
   depends_on "python" => :recommended
   depends_on "gsl" => :recommended
-  
+
   # For LZMA
   depends_on "xz"
 
   # For XML on Linux
   depends_on "libxml2" unless OS.mac?
 
+  conflicts_with "root", :because => "Art suite needs c++14"
+
   needs :cxx14
 
   def cmake_opt(opt, pkg = opt)
-    "-D#{opt}=#{(build.with? pkg) ? "ON" : "OFF"}"
+    "-D#{opt}=#{build.with? pkg ? "ON" : "OFF"}"
   end
 
   def install
