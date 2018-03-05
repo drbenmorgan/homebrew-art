@@ -5,19 +5,19 @@ class Canvas < Formula
   version "3.2.1"
   head "https://github.com/drbenmorgan/fnal-canvas.git", :branch => "feature/alt-cmake"
 
+  depends_on "cmake" => :build
+  depends_on "doxygen" => [:recommended, :build]
   depends_on "drbenmorgan/art_suite/cetbuildtools2"
   depends_on "drbenmorgan/art_suite/cetlib_except"
   depends_on "drbenmorgan/art_suite/cetlib"
   depends_on "drbenmorgan/art_suite/fhicl-cpp"
   depends_on "drbenmorgan/art_suite/messagefacility"
   depends_on "art-clhep"
+  depends_on "art-root6" if OS.mac?
   # This leads to an audit error, so should package own boost!
   depends_on "boost" => "c++11"
   depends_on "tbb" => "c++11"
-  depends_on "cmake" => :build
-  depends_on "root6" if OS.mac?
   depends_on "range-v3"
-  depends_on "doxygen" => [:recommended, :build]
 
   def install
     mkdir "build" do

@@ -5,6 +5,8 @@ class CanvasRootIo < Formula
   version "1.4.2"
   head "https://github.com/drbenmorgan/fnal-canvas_root_io.git", :branch => "feature/alt-cmake"
 
+  depends_on "cmake" => :build
+  depends_on "doxygen" => [:recommended, :build]
   depends_on "drbenmorgan/art_suite/cetbuildtools2"
   depends_on "drbenmorgan/art_suite/cetlib_except"
   depends_on "drbenmorgan/art_suite/cetlib"
@@ -12,12 +14,10 @@ class CanvasRootIo < Formula
   depends_on "drbenmorgan/art_suite/messagefacility"
   depends_on "drbenmorgan/art_suite/canvas"
   depends_on "art-clhep"
+  depends_on "art-root6"
   # This leads to an audit error, so should package own boost!
   depends_on "boost" => "c++11"
   depends_on "tbb" => "c++11"
-  depends_on "cmake" => :build
-  depends_on "root6"
-  depends_on "doxygen" => [:recommended, :build]
 
   def install
     mkdir "build" do
