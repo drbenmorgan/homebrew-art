@@ -5,17 +5,15 @@ class Messagefacility < Formula
   version "2.1.1"
   head "https://github.com/drbenmorgan/fnal-messagefacility.git", :branch => "feature/alt-cmake"
 
+  depends_on "doxygen" => [:recommended, :build]
+  depends_on "cmake" => :build
   depends_on "drbenmorgan/art_suite/cetbuildtools2"
   depends_on "drbenmorgan/art_suite/cetlib_except"
   depends_on "drbenmorgan/art_suite/cetlib"
   depends_on "drbenmorgan/art_suite/fhicl-cpp"
-  # This leads to an audit error, so should package own boost!
-  depends_on "boost" => "c++11"
+  depends_on "art-tbb"
+  depends_on "boost"
   depends_on "sqlite"
-  depends_on "tbb" => "c++11"
-  depends_on "cmake" => :build
-  depends_on "doxygen" => [:recommended, :build]
-  depends_on "cmake" => :build
 
   def install
     mkdir "build" do

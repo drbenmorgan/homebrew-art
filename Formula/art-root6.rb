@@ -11,7 +11,7 @@ class ArtRoot6 < Formula
   depends_on "cmake" => :build
   depends_on "openssl" => :recommended
   depends_on "sqlite" => :recommended
-  depends_on "python" => :recommended
+  depends_on "python@2" => :recommended
   depends_on "gsl" => :recommended
 
   # For LZMA

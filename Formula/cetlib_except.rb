@@ -7,9 +7,9 @@ class CetlibExcept < Formula
     url "https://github.com/drbenmorgan/fnal-cetlib_except.git", :tag => "v1.1.6-altcmake"
   end
 
-  depends_on "drbenmorgan/art_suite/cetbuildtools2" => :build
   depends_on "cmake" => :build
   depends_on "doxygen" => [:build, :recommended]
+  depends_on "drbenmorgan/art_suite/cetbuildtools2" => :build
 
   needs :cxx14
 

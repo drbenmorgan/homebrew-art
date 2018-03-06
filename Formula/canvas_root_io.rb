@@ -15,9 +15,8 @@ class CanvasRootIo < Formula
   depends_on "drbenmorgan/art_suite/canvas"
   depends_on "art-clhep"
   depends_on "art-root6"
-  # This leads to an audit error, so should package own boost!
-  depends_on "boost" => "c++11"
-  depends_on "tbb" => "c++11"
+  depends_on "art-tbb"
+  depends_on "boost"
 
   def install
     mkdir "build" do

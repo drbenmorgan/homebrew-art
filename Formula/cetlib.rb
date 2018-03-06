@@ -9,13 +9,12 @@ class Cetlib < Formula
     url "https://github.com/drbenmorgan/fnal-cetlib.git", :tag => "v3.2.0-altcmake_1"
   end
 
-  depends_on "drbenmorgan/art_suite/cetbuildtools2"
-  depends_on "drbenmorgan/art_suite/cetlib_except"
-  # This leads to an audit error, so should package own boost (e.g. art-boost with auto c++14!)
-  depends_on "boost" => "c++11"
-  depends_on "sqlite"
   depends_on "cmake" => :build
   depends_on "doxygen" => [:recommended, :build]
+  depends_on "drbenmorgan/art_suite/cetbuildtools2"
+  depends_on "drbenmorgan/art_suite/cetlib_except"
+  depends_on "boost"
+  depends_on "sqlite"
 
   def install
     mkdir "build" do

@@ -11,8 +11,7 @@ class FhiclCpp < Formula
   depends_on "drbenmorgan/art_suite/cetbuildtools2"
   depends_on "drbenmorgan/art_suite/cetlib_except"
   depends_on "drbenmorgan/art_suite/cetlib"
-  # This leads to an audit error, so should package own boost!
-  depends_on "boost" => "c++11"
+  depends_on "boost"
   depends_on "sqlite"
   depends_on "cmake" => :build
   depends_on "doxygen" => [:recommended, :build]

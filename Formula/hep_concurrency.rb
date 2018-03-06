@@ -7,7 +7,7 @@ class HepConcurrency < Formula
 
   depends_on "drbenmorgan/art_suite/cetbuildtools2"
   depends_on "cmake" => :build
-  depends_on "tbb" => "c++11"
+  depends_on "art-tbb"
 
   needs :cxx14
 

@@ -3,14 +3,11 @@ class ArtClhep < Formula
   homepage "https://proj-clhep.web.cern.ch/proj-clhep/"
   url "https://proj-clhep.web.cern.ch/proj-clhep/DISTRIBUTION/tarFiles/clhep-2.4.0.1.tgz"
   sha256 "4c7e2c6ac63e0237100e4ddcbfdc3d7e7dc6592f95bdbdcc0e43a6892b9fd6e0"
-
-  conflicts_with "clhep", :because => "we need c++14"
-
-  head do
-    url "https://gitlab.cern.ch/CLHEP/CLHEP.git"
-  end
+  head "https://gitlab.cern.ch/CLHEP/CLHEP.git"
 
   depends_on "cmake" => :build
+
+  conflicts_with "clhep", :because => "we need c++14"
 
   def install
     # CLHEP is super fussy and doesn't allow source tree builds

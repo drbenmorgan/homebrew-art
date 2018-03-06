@@ -1,9 +1,10 @@
- class RangeV3 < Formula
+class RangeV3 < Formula
   desc "Experimental range library for C++11/14/17"
   homepage "https://github.com/ericniebler/range-v3"
-  head "https://github.com/ericniebler/range-v3.git"
   url "https://github.com/ericniebler/range-v3/archive/0.3.0.tar.gz"
   sha256 "cc29fbed5b06b11e7f9a732f7e1211483ebbd3cfe29d86e40c93209014790d74"
+  head "https://github.com/ericniebler/range-v3.git"
+
   depends_on "cmake" => :build
 
   needs :cxx14
