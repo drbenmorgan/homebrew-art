@@ -23,8 +23,7 @@ class CanvasRootIo < Formula
       args = std_cmake_args
       args << "-DALT_CMAKE=ON"
       system "cmake", "..", *args
-      # Temp workaround for checkClassVersion needing ROOT's python module
-      system "PYTHONPATH=$(root-config --libdir) make"
+      system "make"
       system "ctest"
       system "make", "install"
     end
