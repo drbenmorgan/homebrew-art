@@ -6,6 +6,7 @@ class Canvas < Formula
   head "https://github.com/drbenmorgan/fnal-canvas.git", :branch => "feature/alt-cmake"
 
   depends_on "cmake" => :build
+  depends_on "cppunit" => :build
   depends_on "doxygen" => [:recommended, :build]
   depends_on "art-clhep"
   depends_on "art-root6" if OS.mac?
@@ -17,6 +18,7 @@ class Canvas < Formula
   depends_on "drbenmorgan/art_suite/messagefacility"
   depends_on "boost"
   depends_on "range-v3"
+
 
   def install
     mkdir "build" do
