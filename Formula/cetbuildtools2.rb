@@ -12,7 +12,7 @@ class Cetbuildtools2 < Formula
       args = std_cmake_args
       args << "-DSPHINX_BUILD_HTML=ON" if build.with? "sphinx-doc"
       system "cmake", "../", *args
-      system "ctest"
+      system "ctest", "-j#{ENV.make_jobs}"
       system "make", "install"
     end
   end
