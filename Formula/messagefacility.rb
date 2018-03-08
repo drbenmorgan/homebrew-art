@@ -5,14 +5,14 @@ class Messagefacility < Formula
   version "2.1.1"
   head "https://github.com/drbenmorgan/fnal-messagefacility.git", :branch => "feature/alt-cmake"
 
-  depends_on "doxygen" => [:recommended, :build]
   depends_on "cmake" => :build
-  depends_on "drbenmorgan/art_suite/cetbuildtools2"
-  depends_on "drbenmorgan/art_suite/cetlib_except"
-  depends_on "drbenmorgan/art_suite/cetlib"
-  depends_on "drbenmorgan/art_suite/fhicl-cpp"
+  depends_on "doxygen" => [:recommended, :build]
   depends_on "art-tbb"
-  depends_on "boost"
+  depends_on "art-boost"
+  depends_on "cetbuildtools2"
+  depends_on "cetlib_except"
+  depends_on "cetlib"
+  depends_on "fhicl-cpp"
   depends_on "sqlite"
 
   def install

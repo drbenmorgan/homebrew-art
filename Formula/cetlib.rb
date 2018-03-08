@@ -11,9 +11,9 @@ class Cetlib < Formula
 
   depends_on "cmake" => :build
   depends_on "doxygen" => [:recommended, :build]
-  depends_on "drbenmorgan/art_suite/cetbuildtools2"
-  depends_on "drbenmorgan/art_suite/cetlib_except"
-  depends_on "boost"
+  depends_on "art-boost"
+  depends_on "cetbuildtools2"
+  depends_on "cetlib_except"
   depends_on "sqlite"
 
   def install

@@ -8,15 +8,15 @@ class Canvas < Formula
   depends_on "cmake" => :build
   depends_on "cppunit" => :build
   depends_on "doxygen" => [:recommended, :build]
+  depends_on "art-boost"
   depends_on "art-clhep"
   depends_on "art-root6" if OS.mac?
   depends_on "art-tbb"
-  depends_on "drbenmorgan/art_suite/cetbuildtools2"
-  depends_on "drbenmorgan/art_suite/cetlib_except"
-  depends_on "drbenmorgan/art_suite/cetlib"
-  depends_on "drbenmorgan/art_suite/fhicl-cpp"
-  depends_on "drbenmorgan/art_suite/messagefacility"
-  depends_on "boost"
+  depends_on "cetbuildtools2"
+  depends_on "cetlib_except"
+  depends_on "cetlib"
+  depends_on "fhicl-cpp"
+  depends_on "messagefacility"
   depends_on "range-v3"
 
 

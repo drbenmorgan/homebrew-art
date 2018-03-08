@@ -9,7 +9,7 @@ class CetlibExcept < Formula
 
   depends_on "cmake" => :build
   depends_on "doxygen" => [:build, :recommended]
-  depends_on "drbenmorgan/art_suite/cetbuildtools2" => :build
+  depends_on "cetbuildtools2" => :build
 
   needs :cxx14
 

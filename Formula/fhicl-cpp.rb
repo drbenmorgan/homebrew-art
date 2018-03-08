@@ -8,14 +8,13 @@ class FhiclCpp < Formula
     url "https://github.com/drbenmorgan/fnal-fhicl-cpp.git", :tag => "v4.6.5-altcmake"
   end
 
-  depends_on "drbenmorgan/art_suite/cetbuildtools2"
-  depends_on "drbenmorgan/art_suite/cetlib_except"
-  depends_on "drbenmorgan/art_suite/cetlib"
-  depends_on "boost"
-  depends_on "sqlite"
   depends_on "cmake" => :build
   depends_on "doxygen" => [:recommended, :build]
-  depends_on "cmake" => :build
+  depends_on "art-boost"
+  depends_on "cetbuildtools2"
+  depends_on "cetlib_except"
+  depends_on "cetlib"
+  depends_on "sqlite"
 
   def install
     mkdir "build" do
