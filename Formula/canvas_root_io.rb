@@ -17,8 +17,11 @@ class CanvasRootIo < Formula
   depends_on "fhicl-cpp"
   depends_on "messagefacility"
   depends_on "canvas"
+  depends_on "python@2"
 
   def install
+    ENV.prepend_path "PATH", Formula["python@2"].libexec/"bin"
+
     mkdir "build" do
       args = std_cmake_args
       args << "-DALT_CMAKE=ON"
