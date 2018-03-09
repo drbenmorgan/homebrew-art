@@ -14,12 +14,36 @@ class FhiclCpp < Formula
   depends_on "cetbuildtools2"
   depends_on "cetlib_except"
   depends_on "cetlib"
+  depends_on "python@2"
   depends_on "sqlite"
 
   def install
+    args = std_cmake_args
+    args << "-DALT_CMAKE=ON"
+
+    # When building with Python, make sure we used brewed python@2
+    ENV.prepend_path "PATH", Formula["python@2"].opt_libexec/"bin"
+    python_executable = Utils.popen_read("which python").strip
+    python_version = Language::Python.major_minor_version("python")
+    python_prefix = Utils.popen_read("#{python_executable} -c 'import sys;print(sys.prefix)'").chomp
+    python_include = Utils.popen_read("#{python_executable} -c 'from distutils import sysconfig;print(sysconfig.get_python_inc(True))'").chomp
+
+    # cmake picks up the system's python dylib, even if we have a brewed one
+    dylib = OS.mac? ? "dylib" : "so"
+    if File.exist? "#{python_prefix}/Python"
+      python_library = "#{python_prefix}/Python"
+    elsif File.exist? "#{python_prefix}/lib/libpython#{python_version}.a"
+      python_library = "#{python_prefix}/lib/libpython#{python_version}.a"
+    elsif File.exist? "#{python_prefix}/lib/libpython#{python_version}.#{dylib}"
+      python_library = "#{python_prefix}/lib/libpython#{python_version}.#{dylib}"
+    else
+      odie "No libpythonX.Y.{a,dylib} file found!"
+    end
+
+    args << "-DPYTHON_EXECUTABLE='#{python_executable}'"
+    args << "-DPYTHON_INCLUDE_DIR='#{python_include}'"
+    args << "-DPYTHON_LIBRARY='#{python_library}'"
     mkdir "build" do
-      args = std_cmake_args
-      args << "-DALT_CMAKE=ON"
       system "cmake", "..", *args
       system "make"
       system "ctest"
