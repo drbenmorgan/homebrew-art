@@ -15,28 +15,17 @@ class ArtRoot6 < Formula
   depends_on "openssl"
   depends_on "sqlite"
   depends_on "gsl"
-  depends_on "python" => :recommended
-  depends_on "python@2" => :optional
+  # Force python@2 temporarily until upstream linuxbrew completes
+  # transition to py3
+  depends_on "python@2"
 
   conflicts_with "root", :because => "Art suite needs c++14"
 
   needs :cxx14
 
-  def cmake_opt(opt, pkg = opt)
-    "-D#{opt}=#{build.with? pkg ? "ON" : "OFF"}"
-  end
-
   def install
     # Work around "error: no member named 'signbit' in the global namespace"
     ENV.delete("SDKROOT") if DevelopmentTools.clang_build_version >= 900
-
-    # brew audit doesn't like non-executables in bin
-    # so we will move {thisroot,setxrd}.{c,}sh to libexec
-    # (and change any references to them)
-    #inreplace Dir["config/roots.in", "config/thisroot.*sh",
-    #              "etc/proof/utils/pq2/setup-pq2",
-    #              "man/man1/setup-pq2.1", "README/INSTALL", "README/README"],
-    #  /bin.thisroot/, "libexec/thisroot"
 
     args = *std_cmake_args
     args << "-DCMAKE_ELISPDIR=#{elisp}"
@@ -99,38 +88,28 @@ class ArtRoot6 < Formula
     ]
 
     # Python requires a bit of finessing
-    if build.with?("python") && build.with?("python@2")
-       odie "Root: Does not support building both python 2 and 3 wrappers"
-    elsif build.with?("python") || build.with?("python@2")
-      if build.with? "python@2"
-        ENV.prepend_path "PATH", Formula["python@2"].opt_libexec/"bin"
-        python_executable = Utils.popen_read("which python").strip
-        python_version = Language::Python.major_minor_version("python")
-      elsif build.with? "python"
-        python_executable = Utils.popen_read("which python3").strip
-        python_version = Language::Python.major_minor_version("python3")
-      end
+    ENV.prepend_path "PATH", Formula["python@2"].opt_libexec/"bin"
+    python_executable = Utils.popen_read("which python").strip
+    python_version = Language::Python.major_minor_version("python")
 
-      python_prefix = Utils.popen_read("#{python_executable} -c 'import sys;print(sys.prefix)'").chomp
-      python_include = Utils.popen_read("#{python_executable} -c 'from distutils import sysconfig;print(sysconfig.get_python_inc(True))'").chomp
-      args << "-Dpython=ON"
+    python_prefix = Utils.popen_read("#{python_executable} -c 'import sys;print(sys.prefix)'").chomp
+    python_include = Utils.popen_read("#{python_executable} -c 'from distutils import sysconfig;print(sysconfig.get_python_inc(True))'").chomp
+    args << "-Dpython=ON"
 
-      # cmake picks up the system's python dylib, even if we have a brewed one
-      if File.exist? "#{python_prefix}/Python"
-        python_library = "#{python_prefix}/Python"
-      elsif File.exist? "#{python_prefix}/lib/lib#{python_version}.a"
-        python_library = "#{python_prefix}/lib/lib#{python_version}.a"
-      elsif File.exist? "#{python_prefix}/lib/lib#{python_version}.dylib"
-        python_library = "#{python_prefix}/lib/lib#{python_version}.dylib"
-      else
-        odie "No libpythonX.Y.{a,dylib} file found!"
-      end
-      args << "-DPYTHON_EXECUTABLE='#{python_executable}'"
-      args << "-DPYTHON_INCLUDE_DIR='#{python_include}'"
-      args << "-DPYTHON_LIBRARY='#{python_library}'"
+    # cmake picks up the system's python dylib, even if we have a brewed one
+    dylib = OS.mac? ? "dylib" : "so"
+    if File.exist? "#{python_prefix}/Python"
+      python_library = "#{python_prefix}/Python"
+    elsif File.exist? "#{python_prefix}/lib/libpython#{python_version}.#{dylib}"
+      python_library = "#{python_prefix}/lib/libpython#{python_version}.#{dylib}"
+    elsif File.exist? "#{python_prefix}/lib/libpython#{python_version}.a"
+      python_library = "#{python_prefix}/lib/libpython#{python_version}.a"
     else
-      args << "-Dpython=OFF"
+      odie "No libpythonX.Y.{dylib|so,a} file found!"
     end
+    args << "-DPYTHON_EXECUTABLE='#{python_executable}'"
+    args << "-DPYTHON_INCLUDE_DIR='#{python_include}'"
+    args << "-DPYTHON_LIBRARY='#{python_library}'"
 
     mkdir "cmake-build" do
       system "cmake", "..", *args
@@ -179,9 +158,9 @@ class ArtRoot6 < Formula
     assert_equal "\nProcessing test.C...\nHello, world!\n",
                  shell_output("/bin/bash test.bash")
 
-    if build.with? "python"
+    if build.with? "python@2"
       ENV["PYTHONPATH"] = lib/"root"
-      system "python3", "-c", "import ROOT"
+      system "python2", "-c", "import ROOT"
     end
   end
 end
