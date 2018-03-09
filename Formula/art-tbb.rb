@@ -8,7 +8,7 @@ class ArtTbb < Formula
   # requires malloc features first introduced in Lion
   # https://github.com/Homebrew/homebrew/issues/32274
   depends_on :macos => :lion
-  depends_on "python@2" if MacOS.version <= :snow_leopard
+  depends_on "python@2" if MacOS.version <= :snow_leopard || !OS.mac?
   depends_on "swig" => :build
 
   conflicts_with "tbb", :because => "Art suite needs builds against C++14"
@@ -19,14 +19,22 @@ class ArtTbb < Formula
     compiler = (ENV.compiler == :clang) ? "clang" : "gcc"
     args = %W[tbb_build_prefix=BUILDPREFIX compiler=#{compiler} stdver=c++14]
 
+    # Fix /usr/bin/ld: cannot find -lirml by building rml
+    system "make", "rml", *args unless OS.mac?
+
     system "make", *args
-    lib.install Dir["build/BUILDPREFIX_release/*.dylib"]
+    if OS.mac?
+      lib.install Dir["build/BUILDPREFIX_release/*.dylib"]
+    else
+      lib.install Dir["build/BUILDPREFIX_release/*.so*"]
+    end
     include.install "include/tbb"
 
     # Note that whilst Python module installs, not clear how it functions
     # as importing/running leads to a "no module named _api" error.
     cd "python" do
       ENV["TBBROOT"] = prefix
+      ENV.prepend_path "PATH", Formula["python@2"].libexec/"bin" if !OS.mac?
       system "python", *Language::Python.setup_install_args(prefix)
     end
   end
