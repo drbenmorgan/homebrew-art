@@ -11,6 +11,11 @@ class ArtBoost < Formula
 
   depends_on "icu4c" => :optional
 
+  unless OS.mac?
+    depends_on "bzip2"
+    depends_on "zlib"
+  end
+
   # NB: Not a problem on Mac, but on Linux, C++11/14 ABIs are incompatible
   conflicts_with "boost", :because => "Art suite needs builds against C++14"
 
@@ -19,7 +24,11 @@ class ArtBoost < Formula
   def install
     # Force boost to compile with the desired compiler
     open("user-config.jam", "a") do |file|
-      file.write "using darwin : : #{ENV.cxx} ;\n"
+      if OS.mac?
+        file.write "using darwin : : #{ENV.cxx} ;\n"
+      else
+        file.write "using gcc : : #{ENV.cxx} ;\n"
+      end
     end
 
     # libdir should be set by --prefix but isn't
