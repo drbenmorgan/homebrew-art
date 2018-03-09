@@ -19,6 +19,11 @@ class Messagefacility < Formula
     mkdir "build" do
       args = std_cmake_args
       args << "-DALT_CMAKE=ON"
+      # On linuxbrew (gcc5/6), get warning, hence error:
+      # MessageLoggerImpl.cc:20:47: error: typedef 'using modules_t = class std::vector<std::__cxx11::basic_string<char> >' locally defined but not used [-Werror=unused-local-typedefs]
+      # using modules_t = std::vector<std::string>;
+      #                                           ^
+      args << "-DCET_COMPILER_WARNINGS_ARE_ERRORS=OFF" if !OS.mac?
       system "cmake", "..", *args
       system "make"
       system "ctest"
