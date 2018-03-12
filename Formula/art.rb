@@ -71,6 +71,12 @@ class Art < Formula
     # Get the path to this install's libs
     artLibDir=$(realdir $(dirname ${0})/../lib)
     export ${__CET_LIBRARY_PATH_NAME}=${!__CET_LIBRARY_PATH_NAME}:${artLibDir}
+    # Append Homebrew lib so dependent libs picked up (messagefacility
+    # and canvas_root_io) if we are run from the Cellar rather than from prefix.
+    brewCMD=$(which brew)
+    if [[ ! -z $brewCMD ]] ; then
+      export ${__CET_LIBRARY_PATH_NAME}=${!__CET_LIBRARY_PATH_NAME}:$(brew --prefix)/lib
+    fi
     # - END SHIM
     #-----------------------------------------------------------------------
     # Append our directory to PATH so that subscripts can source cet_test_functions
@@ -83,8 +89,12 @@ class Art < Formula
   end
 
   test do
+    # Bare art should run ok, except that help exits with error....
+    # Should be fixed from https://cdcvs.fnal.gov/redmine/projects/art/repository/revisions/d2f0f99b03f9925545ea7c7cad4fce45ce7a4b5d
+    #system "#{bin}/art", "--help"
+
     # Just a sanity test of running art with an simple fcl file
-    # (which seems to be a valid operation)
+    # Use wrapper script to check environment
     (testpath/"test.fcl").write <<~EOS
     process_name: OptSimpleOut
     physics: {
@@ -99,6 +109,5 @@ class Art < Formula
     }
     EOS
     system "#{bin}/art-brew", "-c", "test.fcl"
-    system "#{bin}/art", "-c", "test.fcl"
   end
 end
