@@ -8,7 +8,7 @@ class ArtTbb < Formula
   # requires malloc features first introduced in Lion
   # https://github.com/Homebrew/homebrew/issues/32274
   depends_on :macos => :lion
-  depends_on "python@2" if MacOS.version <= :snow_leopard || !OS.mac?
+  depends_on "python@2"
   depends_on "swig" => :build
 
   conflicts_with "tbb", :because => "Art suite needs builds against C++14"
