@@ -1,11 +1,8 @@
 class CetlibExcept < Formula
   desc "Cet C++ exception classes"
   homepage "https://github.com/drbenmorgan/fnal-cetlib_except"
-  url "https://github.com/drbenmorgan/fnal-cetlib_except.git", :tag => "v1.1.3-altcmake"
+  url "https://github.com/drbenmorgan/fnal-cetlib_except.git", :tag => "v1.1.6-altcmake"
   head "https://github.com/drbenmorgan/fnal-cetlib_except.git", :branch => "feature/alt-cmake"
-  devel do
-    url "https://github.com/drbenmorgan/fnal-cetlib_except.git", :tag => "v1.1.6-altcmake"
-  end
 
   depends_on "cmake" => :build
   depends_on "doxygen" => [:build, :recommended]
