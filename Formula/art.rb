@@ -33,8 +33,6 @@ class Art < Formula
       args << "-DCET_COMPILER_WARNINGS_ARE_ERRORS=OFF" if !OS.mac?
       # To find root at runtime on linux, because it subdirs its libs
       args << "-DCMAKE_INSTALL_RPATH=#{Formula["art-root6"].lib/"root"}"
-      # Testing only strictly needed at bottling time
-      args << "-DBUILD_TESTING=OFF" unless build.bottle?
       system "cmake", "..", *args
       system "make"
       system "ctest", "-j#{ENV.make_jobs}"
@@ -46,10 +44,61 @@ class Art < Formula
           MachO::Tools.add_rpath(art_exe, "@executable_path/../lib") if OS.mac?
       end
     end
+
+    # Create a shim so that art can be run without needing (DY)LD_LIBRARY_PATH
+    # set to its own location(s). We only APPEND the known internal path
+    # because we don't want to override an existing setting. There's
+    # also no passthrough variable to allow extension.
+    (buildpath/"art-brew").write <<~EOS
+    #!/usr/bin/env bash
+    # Find ourselves, hence actual art command to run
+    function realdir() {
+      local dir="${1:-.}"
+      ( cd "$dir" && pwd -P )
+    }
+    #-----------------------------------------------------------------------
+    # - BEGIN SHIM
+    # Shim around art program to use dynamic loader path without requiring
+    # direct setting by the user. This also works around stripping of
+    # DYLD_LIBRARY_PATH in SIP enabled environments, at least for art's own
+    # plugins. For now we don't provide a passthrough dynamic loader path
+    # as for cetbuildtools to keep things simple (and any brew-installed
+    # plugins will likely be in the same path).
+    __CET_LIBRARY_PATH_NAME="LD_LIBRARY_PATH"
+    if [[ $(uname) == 'Darwin' ]]; then
+      __CET_LIBRARY_PATH_NAME="DYLD_LIBRARY_PATH"
+    fi
+    # Get the path to this install's libs
+    artLibDir=$(realdir $(dirname ${0})/../lib)
+    export ${__CET_LIBRARY_PATH_NAME}=${!__CET_LIBRARY_PATH_NAME}:${artLibDir}
+    # - END SHIM
+    #-----------------------------------------------------------------------
+    # Append our directory to PATH so that subscripts can source cet_test_functions
+    # directly.
+    artExec=$(realdir $(dirname ${0}))/art
+    # Execute command in shimmed environment.
+    $artExec "$@"
+    EOS
+    bin.install "art-brew"
   end
 
   test do
-    # Need a basic exercise...
-    false
+    # Just a sanity test of running art with an simple fcl file
+    # (which seems to be a valid operation)
+    (testpath/"test.fcl").write <<~EOS
+    process_name: OptSimpleOut
+    physics: {
+      ep: [ o1 ]
+      end_paths: [ ep ]
+    }
+    outputs: {
+      o1: {
+        module_type: RootOutput
+        fileName: "junk.out"
+      }
+    }
+    EOS
+    system "#{bin}/art-brew", "-c", "test.fcl"
+    system "#{bin}/art", "-c", "test.fcl"
   end
 end
