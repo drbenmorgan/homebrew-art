@@ -1,13 +1,8 @@
 class Cetlib < Formula
   desc "Mirror of FNAL cetlib C++ library"
   homepage "https://cdcvs.fnal.gov/redmine/projects/cetlib"
-  url "https://github.com/drbenmorgan/fnal-cetlib.git", :branch => "feature/alt-cmake"
-  version "3.1.0"
-  revision 1
+  url "https://github.com/drbenmorgan/fnal-cetlib.git", :tag => "v3.2.0-altcmake_1"
   head "https://github.com/drbenmorgan/fnal-cetlib.git", :branch => "feature/alt-cmake"
-  devel do
-    url "https://github.com/drbenmorgan/fnal-cetlib.git", :tag => "v3.2.0-altcmake_1"
-  end
 
   depends_on "cmake" => :build
   depends_on "doxygen" => [:recommended, :build]
