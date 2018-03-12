@@ -6,8 +6,9 @@ class Art < Formula
   head "https://github.com/drbenmorgan/fnal-art.git", :branch => "feature/new-alt-cmake"
 
   depends_on "cmake" => :build
-  depends_on "doxygen" => [:recommended, :build]
   depends_on "cppunit" => :build
+  depends_on "doxygen" => [:recommended, :build]
+  depends_on "python@2" => :build # for dictionaries
   depends_on "art-boost"
   depends_on "art-clhep"
   depends_on "art-root6"
@@ -24,9 +25,16 @@ class Art < Formula
   needs :cxx14
 
   def install
+    ENV.prepend_path "PATH", Formula["python@2"].libexec/"bin"
+
     mkdir "build" do
       args = std_cmake_args
       args << "-DALT_CMAKE=ON"
+      args << "-DCET_COMPILER_WARNINGS_ARE_ERRORS=OFF" if !OS.mac?
+      # To find root at runtime on linux, because it subdirs its libs
+      args << "-DCMAKE_INSTALL_RPATH=#{Formula["art-root6"].lib/"root"}"
+      # Testing only strictly needed at bottling time
+      args << "-DBUILD_TESTING=OFF" unless build.bottle?
       system "cmake", "..", *args
       system "make"
       system "ctest", "-j#{ENV.make_jobs}"
