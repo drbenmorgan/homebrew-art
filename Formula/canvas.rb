@@ -1,8 +1,7 @@
 class Canvas < Formula
   desc "FNAL C++ library for I/O"
   homepage "https://github.com/drbenmorgan/fnal-canvas.git"
-  url "https://github.com/drbenmorgan/fnal-canvas.git", :branch => "feature/alt-cmake"
-  version "3.2.1"
+  url "https://github.com/drbenmorgan/fnal-canvas.git", :tag => "v3.2.1-altcmake"
   head "https://github.com/drbenmorgan/fnal-canvas.git", :branch => "feature/alt-cmake"
 
   depends_on "cmake" => :build
