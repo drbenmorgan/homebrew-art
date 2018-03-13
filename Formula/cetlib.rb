@@ -9,6 +9,7 @@ class Cetlib < Formula
   depends_on "art-boost"
   depends_on "cetbuildtools2"
   depends_on "cetlib_except"
+  depends_on "openssl" if !OS.mac?
   depends_on "sqlite"
 
   def install
