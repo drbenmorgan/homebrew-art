@@ -31,7 +31,7 @@ As binary bottles are not yet prepared, all art packages will be built from sour
 
 This tap installs vendored versions of [Boost](https://boost.org), [CLHEP](https://cern.ch/clhep), [ROOT](https://root.cern.ch), and [TBB](https://www.threadingbuildingblocks.org) to ensure a consistent C++14 binary interface.
 If you are using an existing install of brew and have installed any of the `boost`, `clhep`, `root` or `tbb` formulae from
-the core tap, then `brew` will warn you and exit.
+the core tap, then `brew` will warn you about conflicts and refuse to install. If you don't require these formulae for other work, they can be removed. Otherwise, you can create a separate install of homebrew (e.g. in `/home/you/art_suite`) to hold only the art installs.
 
 The current packages and stable versions installed are:
 - `Boost` 1.66.0
