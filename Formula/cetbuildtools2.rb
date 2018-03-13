@@ -1,7 +1,7 @@
 class Cetbuildtools2 < Formula
   desc "Custom CMake functionality for building Art Software Suite"
   homepage "https://github.com/drbenmorgan/cetbuildtools2"
-  url "https://github.com/drbenmorgan/cetbuildtools2.git", :tag => "v0.5.1"
+  url "https://github.com/drbenmorgan/cetbuildtools2.git", :tag => "v0.6.0"
   head "https://github.com/drbenmorgan/cetbuildtools2.git", :branch => "develop"
 
   depends_on "cmake" => [:build, :run]
