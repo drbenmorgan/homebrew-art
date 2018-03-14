@@ -60,13 +60,14 @@ class Art < Formula
     # Shim around art program to use dynamic loader path without requiring
     # direct setting by the user. This also works around stripping of
     # DYLD_LIBRARY_PATH in SIP enabled environments, at least for art's own
-    # plugins. For now we don't provide a passthrough dynamic loader path
-    # as for cetbuildtools to keep things simple (and any brew-installed
-    # plugins will likely be in the same path).
+    # plugins. A passthrough path "ART_PLUGIN_PATH" is prepended to the
+    # dynamic loader path if present to allow usage in a SIP enabled environment
     __CET_LIBRARY_PATH_NAME="LD_LIBRARY_PATH"
     if [[ $(uname) == 'Darwin' ]]; then
       __CET_LIBRARY_PATH_NAME="DYLD_LIBRARY_PATH"
     fi
+    # Add passthrough path, if set
+    export ${__CET_LIBRARY_PATH_NAME}=${ART_PLUGIN_PATH:+${ART_PLUGIN_PATH}:}${!__CET_LIBRARY_PATH_NAME}
     # Get the path to this install's libs
     artLibDir=$(realdir $(dirname ${0})/../lib)
     export ${__CET_LIBRARY_PATH_NAME}=${!__CET_LIBRARY_PATH_NAME}:${artLibDir}
