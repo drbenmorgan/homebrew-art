@@ -29,7 +29,7 @@ class Art < Formula
     mkdir "build" do
       args = std_cmake_args
       args << "-DALT_CMAKE=ON"
-      args << "-DCET_COMPILER_WARNINGS_ARE_ERRORS=OFF" if !OS.mac?
+      args << "-DCET_COMPILER_WARNINGS_ARE_ERRORS=OFF" unless OS.mac?
       # To find root at runtime on linux, because it subdirs its libs
       args << "-DCMAKE_INSTALL_RPATH=#{Formula["art-root6"].lib/"root"}"
       system "cmake", "..", *args
@@ -40,7 +40,7 @@ class Art < Formula
       # Temp fix for executable rpaths on mac
       # Todo: should be appropriately set by build system, as ROOT does.
       Dir["#{bin}/*"].each do |art_exe|
-          MachO::Tools.add_rpath(art_exe, "@executable_path/../lib") if OS.mac?
+        MachO::Tools.add_rpath(art_exe, "@executable_path/../lib") if OS.mac?
       end
     end
 
@@ -88,25 +88,40 @@ class Art < Formula
     bin.install "art-brew"
   end
 
+  def caveats; <<~EOS
+    Because Art uses the environment variable #{OS.mac? ? "DYLD_LIBRARY_PATH" : "LD_LIBRARY_PATH"}
+    to locate both internal and user plugins, you should add the
+    following to your shell environment before using Art:
+
+    For sh/bash/zsh:
+      export #{OS.mac? ? "DYLD_LIBRARY_PATH" : "LD_LIBRARY_PATH"}=$(brew --prefix)/lib:${#{OS.mac? ? "DYLD_LIBRARY_PATH" : "LD_LIBRARY_PATH"}}
+    For csh/tsch:
+      setenv #{OS.mac? ? "DYLD_LIBRARY_PATH" : "LD_LIBRARY_PATH"}=$(brew --prefix)/lib:${#{OS.mac? ? "DYLD_LIBRARY_PATH" : "LD_LIBRARY_PATH"}}
+
+    You should then extend these variables as needed with
+    paths holding the Art plugins you wish to use.
+    EOS
+  end
+
   test do
     # Bare art should run ok, except that help exits with error....
     # Should be fixed from https://cdcvs.fnal.gov/redmine/projects/art/repository/revisions/d2f0f99b03f9925545ea7c7cad4fce45ce7a4b5d
-    #system "#{bin}/art", "--help"
+    # system "#{bin}/art", "--help"
 
     # Just a sanity test of running art with an simple fcl file
     # Use wrapper script to check environment
     (testpath/"test.fcl").write <<~EOS
-    process_name: OptSimpleOut
-    physics: {
-      ep: [ o1 ]
-      end_paths: [ ep ]
-    }
-    outputs: {
-      o1: {
-        module_type: RootOutput
-        fileName: "junk.out"
+      process_name: OptSimpleOut
+      physics: {
+        ep: [ o1 ]
+        end_paths: [ ep ]
       }
-    }
+      outputs: {
+        o1: {
+          module_type: RootOutput
+          fileName: "junk.out"
+        }
+      }
     EOS
     system "#{bin}/art-brew", "-c", "test.fcl"
   end
