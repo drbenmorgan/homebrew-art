@@ -10,15 +10,35 @@ a single Art version.
 
 # Getting Started
 ## macOS
-Install [Homebrew](https://brew.sh) either in `/usr/local` or a location of your choice (you can also use an existing install if you have one). Make sure to run `brew doctor` and resolve any issues before proceeding 
+Install [Homebrew](https://brew.sh) either in `/usr/local` or a location of your choice (you can also use an existing install if you have one). Make sure to run `brew doctor` and resolve any issues before proceeding
 
 ## Linux
-Due to the more fragmented nature of Linux systems, it's currently recommended to use [linuxbrew's](https://linuxbrew.sh) 
-Docker container to provide a consistent environment and system (modern glibc, binutils and gcc).
+Due to the relatively fragmented nature of Linux toolchains (GCC etc), only Ubuntu 16.04 LTS is currently
+confirmed to work. Even in this case, you will need to add:
 
+1. The [Ubuntu Toolchain PPA](https://launchpad.net/~ubuntu-toolchain-r/+archive/ubuntu/test).
+   - Follow the instructions on the above page, and then do `sudo apt-get install gcc-6`
+2. Graphics libraries for [ROOT](https://root.cern.ch)
+   - `sudo apt-get install libglu1-mesa-dev libx11-dev libxext-dev libxft-dev libxpm-dev`
+
+Install [Linuxbrew](https://brew.sh) either in the recommended `/home/linuxbrew/.linuxbrew`  or in a location
+of your choice. However, the latter will require more builds from source. Make sure to run `brew doctor` and resolve any issues before proceeding.
+
+If you're just interested in trying things out and have Docker available, images are available for the base linux
+system without art:
+
+``` console
+$ docker run --rm -it benmorgan/artbase
+```
+
+or with a full art install on top of that
+
+```console
+$ docker run --rm -it benmorgan/art
+```
 
 # Installing art
-Once you have brew installed, simply do
+Once you have Home/linuxbrew installed, simply do
 
 ```console
 $ brew tap drbenmorgan/art_suite
@@ -58,19 +78,45 @@ Assuming that you have your environment configured as recommended by Brew, you c
 $ art --help
 ```
 
-Due to art's reliance on the system dynamic loader path (`LD_LIBRARY_PATH` on Linux, `DYLD_LIBRARY_PATH` on macOS) to locate 
-all plugins and dictionaries, including its own, the Brew install of art supplies a wrapper script `art-brew`. This simply appends the path to art's own plugins to the system dynamic path so that you do not need to set these yourself. Otherwise, it can be run exactly like art:
+Due to art's reliance on the system dynamic loader path (`LD_LIBRARY_PATH` on Linux, `DYLD_LIBRARY_PATH` on macOS) to locate
+all plugins and dictionaries, including its own, you will also need to set these in your shell before running art:
 
-``` console
-$ art-brew --help
+```console
+$ brew info art
 ...
-$ art-brew -c myconfig.fcl
-...
+==> Caveats
+Because Art uses the environment variable DYLD_LIBRARY_PATH
+to locate both internal and user plugins, you should add the
+following to your shell environment before using Art:
+
+For sh/bash/zsh:
+  export DYLD_LIBRARY_PATH=$(brew --prefix)/lib:${DYLD_LIBRARY_PATH}
+For csh/tsch:
+  setenv DYLD_LIBRARY_PATH=$(brew --prefix)/lib:${DYLD_LIBRARY_PATH}
+
+You should then extend these variables as needed with
+paths holding the Art plugins you wish to use.
+$
 ```
 
-On Linux systems, you can extend `LD_LIBRARY_PATH` as required to point to your own plugins and dictionaries. 
+Even on SIP enabled macOS systems, you should then be able to extend and use `DYLD_LIBRARY_PATH`
+if `art` is *not* installed in a SIP protected location (which should be the case for most
+Homebrew installs). If this does not work, try:
 
-On macOS, System Integrity Protection (SIP) will empty `DYLD_LIBRARY_PATH` in processes that are started from programs in SIP-enabled areas. As this includes usual system shells, extensions of `DYLD_LIBRARY_PATH` are not passed through to `art` via `art-brew` yet. This is a work in progress.
+``` console
+$ DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH art <args>
+```
+
+Failing that, you can also try the `art-brew` wrapper script, which forwards on the needed environment
+to `art` via a separate environment variable `ART_PLUGIN_PATH`. This can be used as:
+
+``` console
+$ export ART_PLUGIN_PATH=$DYLD_LIBRARY_PATH
+$ art-brew <normalartargs>
+```
+
+As a prototype, these are likely many further gotchas down the road, so reports are welcome.
+
 
 ## Development
 TBD via the `toyExperiment` project.
