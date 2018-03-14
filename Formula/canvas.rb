@@ -18,7 +18,6 @@ class Canvas < Formula
   depends_on "messagefacility"
   depends_on "range-v3"
 
-
   def install
     mkdir "build" do
       args = std_cmake_args

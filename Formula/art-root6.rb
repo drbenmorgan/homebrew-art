@@ -28,10 +28,10 @@ class ArtRoot6 < Formula
     ENV.delete("SDKROOT") if DevelopmentTools.clang_build_version >= 900
 
     args = *std_cmake_args
-    args << "-DCMAKE_ELISPDIR=#{elisp}"
+    args << "-DCMAKE_INSTALL_ELISPDIR=#{elisp}"
 
     # Disable everything that might be ON by default
-    args = args + %W[
+    args += %w[
       -Dalien=OFF
       -Dasimage=OFF
       -Dastiff=OFF
@@ -63,7 +63,7 @@ class ArtRoot6 < Formula
     ]
 
     # Now the core/builtin things we want
-    args = args + %W[
+    args += %w[
       -Dcxx14=ON
       -Dfail-on-missing=ON
       -Dgnuinstall=ON
@@ -80,7 +80,7 @@ class ArtRoot6 < Formula
     ]
 
     # Options that require an external
-    args = args + %W[
+    args += %w[
       -Dsqlite=ON
       -Dssl=ON
       -Dmathmore=ON

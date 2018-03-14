@@ -22,7 +22,7 @@ class Messagefacility < Formula
       # MessageLoggerImpl.cc:20:47: error: typedef 'using modules_t = class std::vector<std::__cxx11::basic_string<char> >' locally defined but not used [-Werror=unused-local-typedefs]
       # using modules_t = std::vector<std::string>;
       #                                           ^
-      args << "-DCET_COMPILER_WARNINGS_ARE_ERRORS=OFF" if !OS.mac?
+      args << "-DCET_COMPILER_WARNINGS_ARE_ERRORS=OFF" unless OS.mac?
       system "cmake", "..", *args
       system "make"
       system "ctest"

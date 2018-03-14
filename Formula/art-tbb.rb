@@ -34,7 +34,7 @@ class ArtTbb < Formula
     # as importing/running leads to a "no module named _api" error.
     cd "python" do
       ENV["TBBROOT"] = prefix
-      ENV.prepend_path "PATH", Formula["python@2"].libexec/"bin" if !OS.mac?
+      ENV.prepend_path "PATH", Formula["python@2"].libexec/"bin" unless OS.mac?
       system "python", *Language::Python.setup_install_args(prefix)
     end
   end
