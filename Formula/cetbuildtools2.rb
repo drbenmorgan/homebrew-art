@@ -4,7 +4,7 @@ class Cetbuildtools2 < Formula
   url "https://github.com/drbenmorgan/cetbuildtools2.git", :tag => "v0.6.0"
   head "https://github.com/drbenmorgan/cetbuildtools2.git", :branch => "develop"
 
-  depends_on "cmake" => [:build, :run]
+  depends_on "cmake"
   depends_on "sphinx-doc" => [:recommended, :build]
 
   # Sphinx rtd_theme foir docs
