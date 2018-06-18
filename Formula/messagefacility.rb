@@ -1,7 +1,7 @@
 class Messagefacility < Formula
   desc "FNAL C++ library for message logging"
   homepage "https://github.com/drbenmorgan/fnal-messagefacility.git"
-  url "https://github.com/drbenmorgan/fnal-messagefacility.git", :tag => "v2.1.6-altcmake"
+  url "https://github.com/drbenmorgan/fnal-messagefacility.git", :tag => "v2.2.0-altcmake"
   head "https://github.com/drbenmorgan/fnal-messagefacility.git", :branch => "feature/alt-cmake"
 
   depends_on "cmake" => :build
@@ -31,9 +31,11 @@ class Messagefacility < Formula
 
     # Update linkage (TBDE in CMake, or via args above)
     if OS.mac?
-      MachO::Tools.change_install_name("#{lib}/libMF_MessageLogger.dylib",
-                                      "@rpath/libMF_Utilities.dylib",
-                                      "#{lib}/libMF_Utilities.dylib")
+      if build.stable?
+        MachO::Tools.change_install_name("#{bin}/ELdestinationTester",
+                                        "@rpath/libMF_MessageLogger.dylib",
+                                        "#{lib}/libMF_MessageLogger.dylib")
+      end
     end
   end
 
@@ -46,7 +48,8 @@ class Messagefacility < Formula
         return 0;
       }
     EOS
-    system ENV.cxx, "-std=c++1y", "test.cpp", "-L#{lib}", "-lMF_MessageLogger", "-lMF_Utilities", "-o", "test"
+    system ENV.cxx, "-std=c++1y", "test.cpp", "-L#{lib}", "-lMF_MessageLogger", "-o", "test"
+    ENV["MF_PLUGIN_PATH"] = "#{lib}"
     system "./test"
   end
 end

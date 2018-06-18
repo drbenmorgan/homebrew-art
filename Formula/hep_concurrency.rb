@@ -1,8 +1,7 @@
 class HepConcurrency < Formula
   desc "FNAL C++ Concurrency Library for HEP"
   homepage "https://github.com/drbenmorgan/fnal-hep_concurrency"
-  url "https://github.com/drbenmorgan/fnal-hep_concurrency.git", :branch => "feature/alt-cmake"
-  version "0.1.0"
+  url "https://github.com/drbenmorgan/fnal-hep_concurrency.git", :tag => "v1.0.1-altcmake"
   head "https://github.com/drbenmorgan/fnal-hep_concurrency.git", :branch => "feature/alt-cmake"
 
   depends_on "drbenmorgan/art_suite/cetbuildtools2"

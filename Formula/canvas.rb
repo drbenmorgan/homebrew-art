@@ -1,7 +1,7 @@
 class Canvas < Formula
   desc "FNAL C++ library for I/O"
   homepage "https://github.com/drbenmorgan/fnal-canvas.git"
-  url "https://github.com/drbenmorgan/fnal-canvas.git", :tag => "v3.2.1-altcmake"
+  url "https://github.com/drbenmorgan/fnal-canvas.git", :tag => "v3.3.0-altcmake"
   head "https://github.com/drbenmorgan/fnal-canvas.git", :branch => "feature/alt-cmake"
 
   depends_on "cmake" => :build
@@ -39,6 +39,8 @@ class Canvas < Formula
       }
     EOS
     system ENV.cxx, "-std=c++1y", "test.cpp", "-L#{lib}", "-lcanvas", "-o", "test"
+    # messagefacility now always requires plugin path
+    ENV["MF_PLUGIN_PATH"] = "#{lib}"
     system "./test"
   end
 end
