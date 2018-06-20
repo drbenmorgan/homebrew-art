@@ -1,7 +1,10 @@
 class CetlibExcept < Formula
   desc "Cet C++ exception classes"
   homepage "https://github.com/drbenmorgan/fnal-cetlib_except"
-  url "https://github.com/drbenmorgan/fnal-cetlib_except.git", :tag => "v1.2.0-altcmake"
+  # NB: Use cross-package tag for consistency with upstream, though
+  # in practice this really acts like version+revision in Formulae terms
+  url "https://github.com/drbenmorgan/fnal-cetlib_except.git", :tag => "ART_SUITE_v2_11_02-altcmake"
+  version "1.2.1"
   head "https://github.com/drbenmorgan/fnal-cetlib_except.git", :branch => "feature/alt-cmake"
 
   depends_on "cmake" => :build

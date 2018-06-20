@@ -1,7 +1,8 @@
 class CanvasRootIo < Formula
   desc "FNAL C++ library for I/O (ROOT)"
   homepage "https://github.com/drbenmorgan/fnal-canvas_root_io.git"
-  url "https://github.com/drbenmorgan/fnal-canvas_root_io.git", :tag => "v1.1.4-altcmake"
+  url "https://github.com/drbenmorgan/fnal-canvas_root_io.git", :tag => "ART_SUITE_v2_11_02-altcmake"
+  version "1.1.6"
   head "https://github.com/drbenmorgan/fnal-canvas_root_io.git", :branch => "feature/alt-cmake"
 
   depends_on "cmake" => :build

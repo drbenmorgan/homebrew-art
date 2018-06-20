@@ -1,7 +1,8 @@
 class Messagefacility < Formula
   desc "FNAL C++ library for message logging"
   homepage "https://github.com/drbenmorgan/fnal-messagefacility.git"
-  url "https://github.com/drbenmorgan/fnal-messagefacility.git", :tag => "v2.2.0-altcmake"
+  url "https://github.com/drbenmorgan/fnal-messagefacility.git", :tag => "ART_SUITE_v2_11_02-altcmake"
+  version "2.2.2"
   head "https://github.com/drbenmorgan/fnal-messagefacility.git", :branch => "feature/alt-cmake"
 
   depends_on "cmake" => :build

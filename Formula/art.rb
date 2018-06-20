@@ -1,7 +1,8 @@
 class Art < Formula
   desc "FNAL Art event processing framework for particle physics experiments"
   homepage "https://github.com/drbenmorgan/fnal-art.git"
-  url "https://github.com/drbenmorgan/fnal-art.git", :tag => "v2.11.0-altcmake"
+  url "https://github.com/drbenmorgan/fnal-art.git", :tag => "ART_SUITE_v2_11_02-altcmake"
+  version "2.11.2"
   head "https://github.com/drbenmorgan/fnal-art.git", :branch => "feature/new-alt-cmake"
 
   depends_on "cmake" => :build
