@@ -13,6 +13,7 @@ class Messagefacility < Formula
   depends_on "cetlib_except"
   depends_on "cetlib"
   depends_on "fhicl-cpp"
+  depends_on "hep_concurrency"
   depends_on "sqlite"
 
   def install
