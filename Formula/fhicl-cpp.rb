@@ -43,7 +43,7 @@ class FhiclCpp < Formula
     mkdir "build" do
       system "cmake", "..", *args
       system "make"
-      system "ctest"
+      system "ctest", "-VV"
       system "make", "install"
     end
 
