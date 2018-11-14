@@ -5,7 +5,7 @@ class HepConcurrency < Formula
   version "1.0.2"
   head "https://github.com/drbenmorgan/fnal-hep_concurrency.git", :branch => "feature/alt-cmake"
 
-  depends_on "drbenmorgan/art_suite/cetbuildtools2"
+  depends_on "cetbuildtools2"
   depends_on "cmake" => :build
   depends_on "art-tbb"
 
